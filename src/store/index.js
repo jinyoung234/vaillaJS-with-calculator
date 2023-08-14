@@ -1,15 +1,28 @@
-import { observable } from '../core/observer.js';
+import { DISPATCH_TABLE } from '../constants/store.js';
+import { createStore } from '../core/store.js';
 
-export const store = {
-  state: observable({
-    a: 10,
-    b: 20,
-  }),
+const initState = {
+  a: 10,
+  b: 20,
+};
 
-  setState(newState) {
-    Object.entries(newState).forEach(([key, value]) => {
-      if (!this.state[key]) return;
-      this.state[key] = value;
-    });
-  },
+const reducer = (state = initState, action = {}) => {
+  switch (action.type) {
+    case DISPATCH_TABLE.SET_A:
+      return { ...state, a: action.payload };
+    case DISPATCH_TABLE.SET_B:
+      return { ...state, b: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const store = createStore(reducer);
+
+export const setA = (payload) => {
+  return { type: DISPATCH_TABLE.SET_A, payload };
+};
+
+export const setB = (payload) => {
+  return { type: DISPATCH_TABLE.SET_B, payload };
 };
